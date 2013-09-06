@@ -5,8 +5,7 @@ import org.jboss.as.controller.client.ModelControllerClient;
 import org.jboss.dmr.ModelNode;
 
 /**
- * Hello world!
- *
+ * Testing reloading client
  */
 public class ClientReload 
 {
