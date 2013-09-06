@@ -23,6 +23,11 @@
       <version>${version.jboss-as.controller-client}</version>
     </dependency>
     <dependency>
+          <groupId>org.jboss.as</groupId>
+      <artifactId>jboss-as-cli</artifactId>
+      <version>${version.jboss-as.controller-client}</version>
+    </dependency>
+    <dependency>
       <groupId>org.jboss.as</groupId>
       <artifactId>jboss-as-controller</artifactId>
       <version>${version.jboss-as.controller}</version>

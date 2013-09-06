@@ -80,11 +80,42 @@ public class Utils {
 		ModelNode operation = new ModelNode();
 		operation.get(OP_ADDR).set(mdAddress);
 		operation.get(OP).set(operationName);
-		// for isDefined would work
+		
 		operation.get(INCLUDE_DEFAULTS).set(true);
+		// workaround for isDefined would work
+		operation.get(RECURSIVE).set(true);
         
         return execute(operation);
 	}
+	
+    /**
+     * Checking existence of something on the specified address
+     * @param address - use like /subsystem=datasources
+     * @param checkPath use like [data-source, ExampleDS]
+     */
+    public static boolean isDefined(String address, String[] checkPath) {
+		PathAddress pa = PathAddress.pathAddress(parseAddress(address));
+		ModelNode mdAddress = pa.toModelNode();
+		
+		ModelNode operation = new ModelNode();
+		operation.get(OP_ADDR).set(mdAddress);
+		operation.get(OP).set("read-resource");
+		
+		operation.get(INCLUDE_DEFAULTS).set(true);
+		// workaround for isDefined would work (bz1005131)
+		operation.get(RECURSIVE).set(true);
+        
+        ModelNode resultCheck = execute(operation);
+        resultCheck = getResult(resultCheck);
+        
+        for(String checkStr: checkPath) {
+        	if (!resultCheck.isDefined()) { 
+        		return false;
+        	}
+        	resultCheck.get(checkStr);
+        }
+        return true;
+    }
 	
 	//	op.get("recursive").set(true);
 	// op.get("operations").set(true);
@@ -96,6 +127,7 @@ public class Utils {
 		operation.get(OP).set(READ_ATTRIBUTE_OPERATION);
 		operation.get(NAME).set(attrName);
         operation.get(OP_ADDR).set(mdAddress);
+        operation.get(RECURSIVE).set(true);
         
         return execute(operation);
 	}

@@ -3,7 +3,9 @@ package ochaloup;
 import ochaloup.util.Utils;
 
 import org.apache.log4j.Logger;
+import org.jboss.as.cli.scriptsupport.CLI;
 import org.jboss.dmr.ModelNode;
+
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.*;
 
 /**
@@ -21,6 +23,7 @@ public class OperationsMain {
 
 			// ModelNode result = readAttr("/interface=unsecure", "inet-address");
 			// ModelNode result = readAttr("/interface=public", "inet-address");
+			// showMeResults(result);
 
 			// ModelNode result = readAttr("/system-property=" + propertyName, "value");
 			// log.info("system property foo result: " + result);
@@ -35,9 +38,17 @@ public class OperationsMain {
 			ModelNode readResource = Utils.runOperation(address, oper);
 			ModelNode readResourceResult = Utils.getResult(readResource);
 			showMeResults(readResourceResult);
-			log.info("resourceees: " + readResource.get("result").get("data-source").get("ExampleDS").isDefined()); // hmm... returning false - why?
-			log.info("resourceees: " + readResource.get("result").get("data-source").isDefined());
-			log.info("resourceees: " + readResourceResult.get("data-source").get("ExampleDS").isDefined()); // returning false - fuck!
+			// log.info("resourceees: " + readResource.get("result").get("data-source").get("ExampleDS").isDefined()); // hmm... returning false - why?
+			// log.info("resourceees: " + readResource.get("result").get("data-source").isDefined());
+			log.info("resourceees: " + readResourceResult.get("data-source").get("ExampleDS").isDefined());
+			
+			log.info(Utils.isDefined("/subsystem=datasources", new String[]{"data-source", "ExampleDS"}));
+			
+			CLI cli = CLI.newInstance();
+			cli.connect();
+			// do st.
+			cli.disconnect();
+			
 		} finally {
 			Utils.closeClient();
 		}
