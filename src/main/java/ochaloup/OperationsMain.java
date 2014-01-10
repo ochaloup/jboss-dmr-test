@@ -1,5 +1,6 @@
 package ochaloup;
 
+
 import ochaloup.util.Utils;
 
 import org.apache.log4j.Logger;
@@ -32,6 +33,9 @@ public class OperationsMain {
 			// log.info("system property foo resolved: " +
 			// result.resolve());
 
+			//log.info("mmm: " + System.getProperty("abc"));
+			
+			/*
 			// read-resource data check
 			String address = "/subsystem=datasources";
 			String oper = "read-resource";
@@ -41,14 +45,31 @@ public class OperationsMain {
 			// log.info("resourceees: " + readResource.get("result").get("data-source").get("ExampleDS").isDefined()); // hmm... returning false - why?
 			// log.info("resourceees: " + readResource.get("result").get("data-source").isDefined());
 			log.info("resourceees: " + readResourceResult.get("data-source").get("ExampleDS").isDefined());
-			
 			log.info(Utils.isDefined("/subsystem=datasources", new String[]{"data-source", "ExampleDS"}));
+			*/
 			
+		  String remoteOutboundSocketBindingName = "remote-messaging";
+		  String remoteOutboundSocketHost = "localhost";
+		  String remoteOutboundSocketPort = "5645";
+		  String remoteNettyConnector = "netty-remote";
+		  String remoteConnectionFactoryName = "hornetq-remote";
+		  Utils.addOutboundSocketBinding(remoteOutboundSocketBindingName,
+		      remoteOutboundSocketHost, remoteOutboundSocketPort);
+		  Utils.addRemoteNettyConnector(remoteNettyConnector, remoteOutboundSocketBindingName);    
+		  Utils.addPooledConnectionFactory(remoteConnectionFactoryName, "java:/jmsXAA", remoteNettyConnector);
+		  
+			// Utils.restart();
+			
+			/*
 			CLI cli = CLI.newInstance();
 			cli.connect();
 			// do st.
 			cli.disconnect();
+			*/
 			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		} finally {
 			Utils.closeClient();
 		}

@@ -10,14 +10,17 @@ import org.jboss.dmr.ModelNode;
 public class ClientReload 
 {
     public static void main( String[] args ) throws Exception {
+
     	ModelControllerClient client = ModelControllerClient.Factory.create(InetAddress.getByName("localhost"), 9999);
     	
+try {
     	ModelNode op = new ModelNode();
     	op.get("operation").set("reload");
     	op.get("admin-only").set(true);
     	ModelNode status = client.execute(op);
     	System.out.println("We are getting: " + status);
     	
+/*
         Thread.sleep(6000);
 
         // client = ModelControllerClient.Factory.create(InetAddress.getByName("localhost"), 9999);
@@ -26,7 +29,10 @@ public class ClientReload
         rop.get("name").set("server-state");
         ModelNode status2 = client.execute(rop);
         System.out.println("Server state: " + status2);
+*/
         
+} finally {
         client.close();
+}
     }
 }

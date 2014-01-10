@@ -1,1 +1,3 @@
 mvn install exec:java -Dexec.mainClass="ochaloup.ClientReload"
+mvn install exec:java -Dexec.mainClass="ochaloup.OperationsMain"
+
